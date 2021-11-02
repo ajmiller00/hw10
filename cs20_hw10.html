@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+	<title>Lyrics</title>
+	<meta charset="utf-8"/>
+	<style type="text/css">
+		html {
+			font-family: 'Bradley Hand';
+			font-size: 20px;
+			line-height: 150%;
+			margin: 10px 30px 10px 30px;
+		}
+
+		.content {
+			display: block;
+		}
+
+		h1 {
+			font-size: 50px;
+			font-weight: bold;
+		}
+	</style>
+
+	<script>
+		function getWeather() {
+			/* Step 1: Make instance of request object...
+			...to make HTTP request after page is loaded*/
+			request = new XMLHttpRequest();
+			console.log("1 - request object created");
+ 
+			// Step 2: Set the URL for the AJAX request to be the JSON file
+ 
+		request.open("GET", "https://api.lyrics.ovh/v1/justin+bieber/baby", true)
+
+			console.log("2 - opened request file");
+ 
+			// Step 3: set up event handler/callback
+
+			request.onreadystatechange = function() {
+				console.log("3 - readystatechange event fired.");
+ 
+				if (request.readyState == 4 && request.status == 200) {
+
+					// Step 5: wait for done + success
+					console.log("5 - response received");
+					result = request.responseText;
+					//alert(result);
+					lyrics = JSON.stringify(result);
+					
+					document.getElementById("data").innerHTML ="Lyrics are:<br><br> " + lyrics; 
+					
+				}
+				else if (request.readyState == 4 && request.status != 200) {
+
+					document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
+
+				}
+
+				else if (request.readyState == 3) {
+
+					document.getElementById("data").innerHTML = "Too soon!  Try again";
+
+				}
+
+			}
+		// Step 4: fire off the HTTP request
+			request.send();
+			console.log("4 - Request sent");
+		}
+	</script>
+</head>
+
+
+<body onload="getWeather()">
+
+	<h1>Lyrics API</h1>
+	<div id="data">Loading...</div>
+
+	<div class='content'>
+		<br>
+		API Name: Lyrics.ovh
+		<br><br>
+		API Function: Retrieves the lyrics of a song
+		<br><br>
+		Options used: Justin+Bieber and Baby - these values indicate the artist and song
+		<br><br>
+		Two useful applications of this API:
+		<ul>
+			<li>Karaoke Website: provides the lyrics for the user's chosen song</li>
+			<li>Closed caption lyric generator for Instagram: provides the closed captions for the background songs in Instagram videos</li>
+		</ul>
+	</div>
+</body>
+</html>
